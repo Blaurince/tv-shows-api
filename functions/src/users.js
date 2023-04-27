@@ -6,7 +6,7 @@ const collection = db.collection('users')
 export async function signup(req, res) {
  const { email, password } = req.body
  if(!email || !password.lenght > 6) {
-    res.status(400).send({message: "Emsil and password are bith required. Password must be 6 characters or more"})
+    res.status(400).send({message: "Emaill and password are both required. Password must be 6 characters or more"})
     return
 }
  // TODO: check if email is already in use

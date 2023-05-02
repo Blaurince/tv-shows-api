@@ -1,6 +1,7 @@
 import { FieldValue } from 'firebase-admin/firestore'
 import { db } from './dbconnect.js'
-
+import jwt from 'jsonwebtoken'
+import { secretKey } from '../secrets.js'
 const collection = db.collection('users')
 
 export async function signup(req, res) {
@@ -23,7 +24,7 @@ login(req,res)
 export async function login(req, res){
 const { email, password } = req.body
 if(!email || !password) {
-    res.status(400).send({message: "Emsil and password are bith required."})
+    res.status(400).send({message: "Email and password are both required."})
     return
 }
 const users = await collection
@@ -35,6 +36,7 @@ if(!user) {
     res.status(400).send({message: "Invalid email and/or password."})
 }
 delete user.password
-res.send(user) // { email, createAt, id }
+const token = jwt.sign(user, secretKey)
+res.send({user, token}) // { email, createAt, id }
 
 }
